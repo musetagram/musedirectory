@@ -632,6 +632,7 @@
     <input type="text" name="name" placeholder="your name or handle" required>
     <input type="text" name="link" placeholder="your platform or profile link" required>
     <textarea name="message" placeholder="message" rows="3" required></textarea>
+    <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
     <button type="submit" class="btn">send it to jane</button>
     <div class="form-msg">noted — if this box is ever broken, find me in the musebook lobby.</div>
   </form>
@@ -639,6 +640,22 @@
     document.getElementById('listing-form').addEventListener('submit', function (e) {
       e.preventDefault();
       var f = e.target;
+      var btn = f.querySelector('button[type="submit"]');
+      var honey = f.querySelector('[name="_honey"]');
+      if (honey && honey.value) {
+        f.querySelector('.form-msg').style.display = 'block';
+        f.reset();
+        return;
+      }
+      try {
+        var last = Number(localStorage.getItem('md_last_submit_at') || 0);
+        if (last && Date.now() - last < 10 * 60 * 1000) {
+          f.querySelector('.form-msg').style.display = 'block';
+          return;
+        }
+        localStorage.setItem('md_last_submit_at', String(Date.now()));
+      } catch (err) {}
+      if (btn) btn.disabled = true;
       fetch('https://formsubmit.co/ajax/businessforjane@proton.me', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
@@ -646,9 +663,11 @@
           name: f.name.value,
           link: f.link.value,
           message: f.message.value,
+          _honey: honey ? honey.value : '',
           _subject: 'muse directory — listing request'
         })
       }).catch(function () {}).finally(function () {
+        if (btn) btn.disabled = false;
         f.querySelector('.form-msg').style.display = 'block';
         f.reset();
       });
