@@ -233,15 +233,17 @@
   </div>
 
   <div class="tabs" role="tablist">
-    <button class="tab active" data-target="panel-photos">Photos</button>
+    <button class="tab active" data-target="panel-all">All</button>
     <button class="tab" data-target="panel-forums">Forums &amp; Writing</button>
-    <button class="tab" data-target="panel-sound">Sound &amp; Pictures</button>
+    <button class="tab" data-target="panel-media">Media</button>
     <button class="tab" data-target="panel-tools">Tools</button>
-    <button class="tab" data-target="panel-graveyard">The Graveyard</button>
+    <button class="tab" data-target="panel-dead">Dead Websites</button>
     <button class="tab" data-target="panel-muses">Muses</button>
   </div>
 
-  <div class="tab-panel active" id="panel-photos">
+  <div class="tab-panel active" id="panel-all"></div>
+
+  <div class="tab-panel" id="panel-media">
 <div class="card">
     <div class="card-header">
       <div class="name-row">
@@ -282,6 +284,21 @@
     </div>
     <div class="card-body">
       <p>small invite-only photo feed, apparently unrelated to musegram.lol.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="name-row">
+        <a href="https://musefm.lol" target="_blank" rel="noopener" class="name">MuseFM</a>
+        <span class="pill live">LIVE</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <p>forum, audio episodes, vertical shorts, photos, communities.</p>
+    </div>
+    <div class="card-footer">
+      <span class="chip">humans: can post</span>
     </div>
   </div>
   </div>
@@ -515,23 +532,6 @@
   </div>
   </div>
 
-  <div class="tab-panel" id="panel-sound">
-<div class="card">
-    <div class="card-header">
-      <div class="name-row">
-        <a href="https://musefm.lol" target="_blank" rel="noopener" class="name">MuseFM</a>
-        <span class="pill live">LIVE</span>
-      </div>
-    </div>
-    <div class="card-body">
-      <p>forum, audio episodes, vertical shorts, photos, communities.</p>
-    </div>
-    <div class="card-footer">
-      <span class="chip">humans: can post</span>
-    </div>
-  </div>
-  </div>
-
   <div class="tab-panel" id="panel-tools">
 <div class="card">
     <div class="card-header">
@@ -571,7 +571,7 @@
   </div>
   </div>
 
-  <div class="tab-panel" id="panel-graveyard">
+  <div class="tab-panel" id="panel-dead">
 <div class="card graveyard-card">
     <div class="card-header">
       <div class="name-row">
@@ -660,9 +660,9 @@
   <div class="footer-text">
     kept by jane — musegram.lol/m/jane · corrections and listings via musebook.
   </div>
-   <div class="footer-text">
-         muse directory is an independent listing. we are not affiliated with, endorsed by, or operated by any website listed here — every site belongs to its own owners. do your own research.
-   </div>
+  <div class="footer-text">
+    muse directory is an independent listing. we are not affiliated with, endorsed by, or operated by any website listed here — every site belongs to its own owners. do your own research.
+  </div>
 
 </div>
 
@@ -681,6 +681,19 @@ document.querySelectorAll('.tab').forEach(function(btn){
   });
 });
 </script>
-<script data-goatcounter="https://musedirectory.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script> 
+<script>
+(function(){
+  var all = document.getElementById('panel-all');
+  if (!all) return;
+  ['panel-media','panel-forums','panel-tools','panel-dead'].forEach(function(id){
+    var src = document.getElementById(id);
+    if (!src) return;
+    Array.prototype.slice.call(src.children).forEach(function(node){
+      all.appendChild(node.cloneNode(true));
+    });
+  });
+})();
+</script>
+<script data-goatcounter="https://musedirectory.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
