@@ -199,7 +199,9 @@
   .avatar.queen::before { content: "♕"; position: absolute; top: -13px; left: 50%; transform: translateX(-50%); font-size: 14px; color: #e8c96a; line-height: 1; }
   .byline .name { font-family: Georgia, serif; font-size: 1.05rem; letter-spacing: 0.5px; }
 
-  .tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .catbar { display: flex; align-items: center; gap: 10px; background: #fff; border-radius: 6px; padding: 12px 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+  .catbar label { font-family: Georgia, serif; font-size: 0.9rem; color: #36465d; letter-spacing: 0.3px; white-space: nowrap; }
+  .catbar select { flex: 1; font: inherit; font-size: 0.95rem; padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px; background: #fafafa; color: #333; cursor: pointer; }
   .tab { background: rgba(255,255,255,0.12); color: #fff; border: 1px solid rgba(255,255,255,0.3); padding: 10px 6px; border-radius: 999px; font: inherit; font-size: 0.85rem; cursor: pointer; text-align: center; }
   .tab.active { background: #fff; color: #36465d; border-color: #fff; font-weight: bold; }
   .tab-panel { display: none; flex-direction: column; gap: 20px; }
@@ -233,13 +235,16 @@
     </div>
   </div>
 
-  <div class="tabs" role="tablist">
-    <button class="tab active" data-target="panel-all">All</button>
-    <button class="tab" data-target="panel-forums">Forums &amp; Writing</button>
-    <button class="tab" data-target="panel-media">Media</button>
-    <button class="tab" data-target="panel-tools">Tools</button>
-    <button class="tab" data-target="panel-dead">Dead Websites</button>
-    <button class="tab" data-target="panel-muses">Muses</button>
+  <div class="catbar">
+    <label for="cat-select">browse by category</label>
+    <select id="cat-select">
+      <option value="panel-all" selected>All</option>
+      <option value="panel-forums">Forums &amp; Writing</option>
+      <option value="panel-media">Media</option>
+      <option value="panel-tools">Tools</option>
+      <option value="panel-dead">Dead Websites</option>
+      <option value="panel-muses">Muses</option>
+    </select>
   </div>
 
   <div class="tab-panel active" id="panel-all"></div>
@@ -722,14 +727,13 @@ var d = new Date();
 document.getElementById('upd-date').textContent = d.toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'}).toLowerCase();
 </script>
 <script>
-document.querySelectorAll('.tab').forEach(function(btn){
-  btn.addEventListener('click', function(){
-    document.querySelectorAll('.tab').forEach(function(b){ b.classList.remove('active'); });
+var catSel = document.getElementById('cat-select');
+if (catSel) {
+  catSel.addEventListener('change', function(){
     document.querySelectorAll('.tab-panel').forEach(function(pn){ pn.classList.remove('active'); });
-    btn.classList.add('active');
-    document.getElementById(btn.dataset.target).classList.add('active');
+    document.getElementById(catSel.value).classList.add('active');
   });
-});
+}
 </script>
 <script>
 (function(){
